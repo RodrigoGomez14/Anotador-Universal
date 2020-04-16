@@ -1,25 +1,48 @@
 import React from 'react';
-import logo from './logo.svg';
+import {MenuPage} from './Pages/MenuPage'
+import {TrucoPage} from './Pages/TrucoPage'
+import {ChinchonPage} from './Pages/ChinchonPage'
+import {ThemeProvider,createMuiTheme} from '@material-ui/core'
+import {BrowserRouter,Switch,Route} from 'react-router-dom'
 import './App.css';
 
+
 function App() {
+  const theme=createMuiTheme({
+    palette: {
+      primary:{
+        main:'#311b92',
+        light:'#6746c3',
+        dark:'#000063',
+        contrastText:'#ffffff'
+      },
+      secondary:{
+        main:'#00796b',
+        light:'#48a999',
+        dark:'#004c40',
+        contrastText:'#ffffff'
+      },
+      danger:{
+        main: '#c62828'
+      },
+      success:{
+        main: '#689f38'
+      },
+      type:'dark'
+    }
+})
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <BrowserRouter>
+          <Switch>
+            <Route exact path='/' component={MenuPage}/>
+            <Route exact path='/Truco' component={TrucoPage}/>
+            <Route exact path='/Chinchon' component={ChinchonPage}/>
+          </Switch>
+        </BrowserRouter>
+      </div>
+    </ThemeProvider>
   );
 }
 
