@@ -18,7 +18,7 @@ export const MenuPage = (props) =>{
                 <Grid item xs={10}>
                     <Paper elevation={6}className={classes.root}>
                         <Grid container xs={12} justify='space-around'>
-                            <Grid item>
+                            <Grid item xs={6}>
                                 <Button 
                                     variant='contained'
                                     color='secondary'
@@ -29,7 +29,7 @@ export const MenuPage = (props) =>{
                                     Truco
                                 </Button>
                             </Grid>
-                            <Grid item>
+                            <Grid item xs={6}>
                                 <Button 
                                     variant='contained'
                                     color='secondary'
@@ -38,6 +38,28 @@ export const MenuPage = (props) =>{
                                     }}
                                 >
                                     Chin Chon
+                                </Button>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Button 
+                                    variant='contained'
+                                    color='secondary'
+                                    onClick={()=>{
+                                        props.history.push('Chorizo')
+                                    }}
+                                >
+                                    Chorizo
+                                </Button>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Button 
+                                    variant='contained'
+                                    color='secondary'
+                                    onClick={()=>{
+                                        //props.history.push('Chorizo')
+                                    }}
+                                >
+                                    Escoba
                                 </Button>
                             </Grid>
                         </Grid>

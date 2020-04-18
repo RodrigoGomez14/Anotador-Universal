@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {Dialog,DialogTitle, DialogActions,Button} from '@material-ui/core'
 import {DialogManoFinalizadaChinchon} from './DialogManoFinalizadaChinchon'
+import {DialogManoFinalizadaChorizo} from './DialogManoFinalizadaChorizo'
 export const DialogManoFinalizada = ({open,setOpenFalse,juego,jugadores,setJugadores,setGanador}) =>{
 
     const [results,setResults]=useState([])
@@ -10,6 +11,8 @@ export const DialogManoFinalizada = ({open,setOpenFalse,juego,jugadores,setJugad
         switch(juego){
             case 'chinchon':
                 return(<DialogManoFinalizadaChinchon jugadores={jugadores} results={results} setResults={setResults} setDisableButton={disabled=>{setDisableButton(disabled)}}/>)
+            case 'chorizo':
+                return(<DialogManoFinalizadaChorizo jugadores={jugadores} results={results} setResults={setResults} setDisableButton={disabled=>{setDisableButton(disabled)}}/>)
             default:
                 return
         }
@@ -18,6 +21,9 @@ export const DialogManoFinalizada = ({open,setOpenFalse,juego,jugadores,setJugad
         switch(juego){
             case 'chinchon':
                 finalizarChinChon(results)
+                setOpenFalse()
+            case 'chorizo':
+                finalizarChorizo(results)
                 setOpenFalse()
             default:
                 return
@@ -67,6 +73,56 @@ export const DialogManoFinalizada = ({open,setOpenFalse,juego,jugadores,setJugad
 
         chequearGanador()
         setJugadores(arr)
+
+    }
+    const finalizarChorizo = resultados =>{
+        let aux = jugadores
+        let resultadosFinal = []
+        resultados.map(resultado=>{
+            if(resultado.nombre != 'Empate'){
+                let count = 0
+                resultado.puntajes.map(puntaje=>{
+                    if(puntaje==='siete de oro'){
+                        count += 2
+                    }
+                    else{
+                        count += 1
+                    }
+                })
+                resultadosFinal.push({
+                    nombre:resultado.nombre,
+                    puntos:count
+                })
+            }
+        })
+        console.log(resultadosFinal)
+        aux.map((jugador,i)=>{
+            let count = 0
+            count += jugador.escobas
+            jugador.puntosExtra.map(puntoExtra=>{
+                count += puntoExtra
+            })
+            resultadosFinal.map(resultado=>{
+                if(resultado.nombre===jugador.nombre){
+                    count += resultado.puntos
+                }
+            })
+            let puntajes = aux[i].resultados
+            puntajes.push(count)
+            let total = jugador.total += count
+            if(total>=50){
+                aux[i].ganador = true
+                setGanador(jugador.nombre)
+            }
+            aux[i].resultados = puntajes
+            aux[i].puntosExtra = []
+            aux[i].escobas = 0
+            aux[i].total = total
+        })
+        setResults([])
+        setDisableButton(true)
+        setJugadores(aux)
+
     }
     return (
         <Dialog open={open}>
@@ -75,7 +131,10 @@ export const DialogManoFinalizada = ({open,setOpenFalse,juego,jugadores,setJugad
             </DialogTitle>
             {renderSwitch()}
             <DialogActions>
-                <Button onClick={setOpenFalse}>
+                <Button onClick={()=>{
+                    setOpenFalse()
+                    setResults([])
+                }}>
                     Cancelar
                 </Button>
                 <Button onClick={finalizarMano} color="secondary" disabled={disableButton}>

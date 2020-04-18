@@ -6,12 +6,13 @@ const useStyles = makeStyles(theme=>({
         width:'100%'
     }
 }))
-export const DialogAgregarJugador = ({jugadores,setJugadores,goBack}) =>{
+export const DialogAgregarJugador = ({jugadores,setJugadores,goBack,juego}) =>{
     const classes = useStyles()
     const [open,setOpen] = useState(true)
     const [nuevoJugador,setNuevoJugador] = useState('')
     const handleChange = e=>{setNuevoJugador(e.target.value)}
-    const agregarJugador = ()=>{
+
+    const agregarJugadorChinChon = ()=>{
         const arr = []
         {nuevoJugador &&
             jugadores.map(jugador=>{
@@ -23,7 +24,43 @@ export const DialogAgregarJugador = ({jugadores,setJugadores,goBack}) =>{
                 total:0,
                 ganador:false,
             })
+            if(arr.length===10){
+                setOpen(false)
+            }
             setJugadores(arr)
+        }
+    }
+    const agregarJugadorChorizo = ()=>{
+        const arr = []
+        {nuevoJugador &&
+            jugadores.map(jugador=>{
+                arr.push(jugador)
+            })
+            arr.push({
+                nombre:nuevoJugador,
+                resultados:[],
+                escobas:0,
+                puntosExtra:[],
+                total:0,
+                ganador:false,
+            })
+            if(arr.length===10){
+                setOpen(false)
+            }
+            setJugadores(arr)
+        }
+    }
+
+    const agregarJugador = ()=>{
+        switch(juego){
+            case 'chinchon':
+                agregarJugadorChinChon();
+                break;
+            case 'chorizo':
+                agregarJugadorChorizo();
+                break;
+            default:
+                break;
         }
     }
     return(
@@ -33,7 +70,7 @@ export const DialogAgregarJugador = ({jugadores,setJugadores,goBack}) =>{
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Al terminar de agregar todos los jugadores presionar el boton finalizar
+                    Al terminar de agregar todos los jugadores presionar el boton finalizar (Max. 10 Jugadores)
                 </DialogContentText>
                 <Grid container>
                     <Grid item xs={12}>
@@ -42,29 +79,35 @@ export const DialogAgregarJugador = ({jugadores,setJugadores,goBack}) =>{
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button onClick={()=>{goBack()}}>
-                    Cancelar
-                </Button>
-                <Button 
-                    disabled={!nuevoJugador}
-                    onClick={()=>{
-                        agregarJugador(nuevoJugador)
-                        setNuevoJugador('')
-                    }}
-                    color='secondary'
-                >
-                    Agregar
-                </Button>
-                {jugadores.length?
-                    <Button 
-                        onClick={()=>{
-                        setOpen(false)
-                    }}>
-                        Finalizar
-                    </Button>
-                    :
-                    null
-                }
+                <Grid container justify='space-between'>
+                    <Grid item>
+                        <Button onClick={()=>{goBack()}}>
+                            Salir
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button 
+                            disabled={!nuevoJugador}
+                            onClick={()=>{
+                                agregarJugador(nuevoJugador)
+                                setNuevoJugador('')
+                            }}
+                            color='secondary'
+                        >
+                            Agregar
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            disabled={jugadores.length?false:true}
+                            onClick={()=>{
+                            setOpen(false)
+                        }}>
+                            Finalizar
+                        </Button>
+                    </Grid>
+                </Grid>
+                
             </DialogActions>
         </Dialog>
     )

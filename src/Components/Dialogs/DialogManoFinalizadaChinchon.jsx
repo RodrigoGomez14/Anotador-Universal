@@ -42,7 +42,13 @@ export const DialogManoFinalizadaChinchon = ({jugadores,results,setResults,setDi
                 puntaje:parseInt(event.target.value)
             })
         }
-        if(arr.length===jugadores.length){
+        let jugadoresEliminados = 0
+        jugadores.map(jugador=>{
+            if(jugador.total>=101){
+                jugadoresEliminados++
+            }
+        })
+        if(arr.length===jugadores.length-jugadoresEliminados){
             setDisableButton(false)
         }
         else{
