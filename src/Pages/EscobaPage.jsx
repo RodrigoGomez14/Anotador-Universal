@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react'
 import {Layout} from '../Pages/Layout'
 import {DialogAgregarJugador} from '../Components/Dialogs/DialogAgregarJugador'
 import {DialogManoFinalizada} from '../Components/Dialogs/DialogManoFinalizada'
+import {DialogAgregarEscoba} from '../Components/Dialogs/Escoba/DialogAgregarEscoba'
 import {DialogPartidaGuardada} from '../Components/Dialogs/DialogPartidaGuardada'
 import {DialogGanador} from '../Components/Dialogs/DialogGanador'
 import {JugadorBasico} from '../Components/Jugadores/JugadorBasico'
@@ -19,20 +20,21 @@ const useStyles = makeStyles(theme=>({
         marginBottom:theme.spacing(1),
     }
 }))
-export const ChinchonPage = (props) =>{
+export const EscobaPage = (props) =>{
     const classes = useStyles()
     const [jugadores,setJugadores] = useState([])
-    const [partidaGuardada,setPartidaGuardada] = useState(undefined)
     const [ganador, setGanador] = useState(undefined)
+    const [partidaGuardada,setPartidaGuardada] = useState(undefined)
     const [openDialogMano,setopenDialogMano] = useState(false)
+    const [openDialogAgregarEscoba,setopenDialogAgregarEscoba] = useState(false)
     const [openDialogAgregarJugador,setopenDialogAgregarJugador] = useState(true)
-
 
     const reiniciar=()=>{
         let arr = jugadores
         arr.map((jugador,i)=>{
             arr[i].nombre=jugador.nombre
             arr[i].total=0
+            arr[i].escobas=0
             arr[i].resultados=[]
             arr[i].ganador=false
         })
@@ -40,21 +42,21 @@ export const ChinchonPage = (props) =>{
         setJugadores(arr)
     }
     useEffect(()=>{
-        const aux = localStorage.getItem('Chinchon')
+        const aux = localStorage.getItem('Escoba')
         setPartidaGuardada(JSON.parse(aux))
     },[])
     return(
-        <Layout titulo={'Chinchon'} history={props.history} jugadores={jugadores}>
+        <Layout titulo={'Escoba'} history={props.history} jugadores={jugadores}>
             <DialogPartidaGuardada
-                titulo='Chinchon'
+                titulo='Escoba'
                 setPartidaGuardada={setPartidaGuardada}
                 partidaGuardada={partidaGuardada}
                 setJugadores={setJugadores}
                 goBack={props.history.goBack} 
                 setopenDialogAgregarJugador={setopenDialogAgregarJugador}
             />
-            <DialogAgregarJugador 
-                juego='chinchon'
+            <DialogAgregarJugador
+                juego='escoba'
                 goBack={props.history.goBack} 
                 jugadores={jugadores} 
                 setJugadores={setJugadores}
@@ -62,29 +64,42 @@ export const ChinchonPage = (props) =>{
                 setOpen={setopenDialogAgregarJugador}
             />
             <DialogManoFinalizada 
-                juego='chinchon' 
+                juego='escoba' 
                 open={openDialogMano} 
                 setOpenFalse={()=>{setopenDialogMano(false)}} 
                 jugadores={jugadores} 
                 setJugadores={setJugadores}
                 setGanador={setGanador}
             />
+            <DialogAgregarEscoba 
+                open={openDialogAgregarEscoba}
+                setOpenFalse={()=>{setopenDialogAgregarEscoba(false)}} 
+                jugadores={jugadores} 
+                setJugadores={setJugadores}
+            />
             <DialogGanador 
                 ganador={ganador}
                 goBack={props.history.goBack}
                 reiniciar={reiniciar}
             />
-            <Grid container>
-                <Grid item xs={12}>
-                    <Button position='static' variant='outlined' color='secondary' className={classes.button} onClick={()=>{setopenDialogMano(true)}}>
+            <Grid container justify='space-around'>
+                <Grid item>
+                    <Button position='static' variant='outlined' color='secondary' className={classes.button} onClick={()=>{setopenDialogAgregarEscoba(true)}}>
+                        Anotar Escoba
+                    </Button>
+                </Grid>
+                <Grid item>
+                    <Button position='static' variant='contained' color='secondary' className={classes.button} onClick={()=>{setopenDialogMano(true)}}>
                         Finalizar Mano
                     </Button>
                 </Grid>
+            </Grid>
+            <Grid container>
                 <Grid item xs={12}>
                     <div className={classes.carousel}>
                         {jugadores.length ?
                             jugadores.map(jugador=>(
-                                <JugadorBasico {...jugador} juego='chinchon'/>
+                                <JugadorBasico {...jugador} juego='escoba'/>
                             ))
                             :
                             null

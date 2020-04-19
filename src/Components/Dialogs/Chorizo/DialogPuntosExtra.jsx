@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Dialog,DialogTitle, DialogContent, DialogActions,Button,Grid,FormControl,makeStyles,Select,MenuItem,InputLabel} from '@material-ui/core'
-import {DialogManoFinalizadaChinchon} from './DialogManoFinalizadaChinchon'
+import {DialogManoFinalizadaChinchon} from '../Chinchon/DialogManoFinalizadaChinchon'
 import {DialogManoFinalizadaChorizo} from './DialogManoFinalizadaChorizo'
 
 const useStyles = makeStyles(theme=>({

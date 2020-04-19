@@ -1,12 +1,16 @@
 import React from 'react'
 import {Layout} from '../Pages/Layout'
-import {Button, Paper, makeStyles,Grid} from '@material-ui/core'
+import {Button, Paper, makeStyles,Grid,Divider} from '@material-ui/core'
 
 const useStyles = makeStyles(theme=>({
     root:{
         marginTop: theme.spacing(2),
         paddingTop: theme.spacing(2),
         paddingBottom:theme.spacing(2)
+    },
+    divider:{
+        width:'80%',
+        borderRadius:'25px'
     }
 }))
 
@@ -17,8 +21,8 @@ export const MenuPage = (props) =>{
             <Grid container justify='center'>
                 <Grid item xs={10}>
                     <Paper elevation={6}className={classes.root}>
-                        <Grid container xs={12} justify='space-around'>
-                            <Grid item xs={6}>
+                        <Grid container xs={12} direction='column' alignItems='center' justify='center'>
+                            <Grid item>
                                 <Button 
                                     variant='contained'
                                     color='secondary'
@@ -29,7 +33,8 @@ export const MenuPage = (props) =>{
                                     Truco
                                 </Button>
                             </Grid>
-                            <Grid item xs={6}>
+                            <hr className={classes.divider}/>
+                            <Grid item>
                                 <Button 
                                     variant='contained'
                                     color='secondary'
@@ -40,7 +45,8 @@ export const MenuPage = (props) =>{
                                     Chin Chon
                                 </Button>
                             </Grid>
-                            <Grid item xs={6}>
+                            <hr className={classes.divider}/>
+                            <Grid item>
                                 <Button 
                                     variant='contained'
                                     color='secondary'
@@ -51,17 +57,19 @@ export const MenuPage = (props) =>{
                                     Chorizo
                                 </Button>
                             </Grid>
-                            <Grid item xs={6}>
+                            <hr className={classes.divider}/>
+                            <Grid item>
                                 <Button 
                                     variant='contained'
                                     color='secondary'
                                     onClick={()=>{
-                                        //props.history.push('Chorizo')
+                                        props.history.push('Escoba')
                                     }}
                                 >
                                     Escoba
                                 </Button>
                             </Grid>
+                            <hr className={classes.divider}/>
                         </Grid>
                     </Paper>
                 </Grid>

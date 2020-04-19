@@ -3,6 +3,7 @@ import {MenuPage} from './Pages/MenuPage'
 import {TrucoPage} from './Pages/TrucoPage'
 import {ChinchonPage} from './Pages/ChinchonPage'
 import {ChorizoPage} from './Pages/ChorizoPage'
+import {EscobaPage} from './Pages/EscobaPage'
 import {ThemeProvider,createMuiTheme} from '@material-ui/core'
 import {BrowserRouter,Switch,Route} from 'react-router-dom'
 import './App.css';
@@ -41,6 +42,7 @@ function App() {
             <Route exact path='/Truco' component={TrucoPage}/>
             <Route exact path='/Chinchon' component={ChinchonPage}/>
             <Route exact path='/Chorizo' component={ChorizoPage}/>
+            <Route exact path='/Escoba' component={EscobaPage}/>
           </Switch>
         </BrowserRouter>
       </div>

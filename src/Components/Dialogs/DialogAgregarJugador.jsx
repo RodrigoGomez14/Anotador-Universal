@@ -6,9 +6,8 @@ const useStyles = makeStyles(theme=>({
         width:'100%'
     }
 }))
-export const DialogAgregarJugador = ({jugadores,setJugadores,goBack,juego}) =>{
+export const DialogAgregarJugador = ({jugadores,setJugadores,goBack,juego,open,setOpen}) =>{
     const classes = useStyles()
-    const [open,setOpen] = useState(true)
     const [nuevoJugador,setNuevoJugador] = useState('')
     const handleChange = e=>{setNuevoJugador(e.target.value)}
 
@@ -50,6 +49,25 @@ export const DialogAgregarJugador = ({jugadores,setJugadores,goBack,juego}) =>{
             setJugadores(arr)
         }
     }
+    const agregarJugadorEscoba = ()=>{
+        const arr = []
+        {nuevoJugador &&
+            jugadores.map(jugador=>{
+                arr.push(jugador)
+            })
+            arr.push({
+                nombre:nuevoJugador,
+                resultados:[],
+                escobas:0,
+                total:0,
+                ganador:false,
+            })
+            if(arr.length===10){
+                setOpen(false)
+            }
+            setJugadores(arr)
+        }
+    }
 
     const agregarJugador = ()=>{
         switch(juego){
@@ -58,6 +76,9 @@ export const DialogAgregarJugador = ({jugadores,setJugadores,goBack,juego}) =>{
                 break;
             case 'chorizo':
                 agregarJugadorChorizo();
+                break;
+            case 'escoba':
+                agregarJugadorEscoba();
                 break;
             default:
                 break;

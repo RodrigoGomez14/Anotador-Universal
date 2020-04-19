@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 import {Dialog,DialogTitle, DialogActions,Button} from '@material-ui/core'
-import {DialogManoFinalizadaChinchon} from './DialogManoFinalizadaChinchon'
-import {DialogManoFinalizadaChorizo} from './DialogManoFinalizadaChorizo'
+import {DialogManoFinalizadaChinchon} from './Chinchon/DialogManoFinalizadaChinchon'
+import {DialogManoFinalizadaChorizo} from './Chorizo/DialogManoFinalizadaChorizo'
+import {DialogManoFinalizadaEscoba} from './Escoba/DialogManoFinalizadaEscoba'
 export const DialogManoFinalizada = ({open,setOpenFalse,juego,jugadores,setJugadores,setGanador}) =>{
 
     const [results,setResults]=useState([])
@@ -13,6 +14,8 @@ export const DialogManoFinalizada = ({open,setOpenFalse,juego,jugadores,setJugad
                 return(<DialogManoFinalizadaChinchon jugadores={jugadores} results={results} setResults={setResults} setDisableButton={disabled=>{setDisableButton(disabled)}}/>)
             case 'chorizo':
                 return(<DialogManoFinalizadaChorizo jugadores={jugadores} results={results} setResults={setResults} setDisableButton={disabled=>{setDisableButton(disabled)}}/>)
+            case 'escoba':
+                return(<DialogManoFinalizadaEscoba jugadores={jugadores} results={results} setResults={setResults} setDisableButton={disabled=>{setDisableButton(disabled)}}/>)
             default:
                 return
         }
@@ -22,9 +25,15 @@ export const DialogManoFinalizada = ({open,setOpenFalse,juego,jugadores,setJugad
             case 'chinchon':
                 finalizarChinChon(results)
                 setOpenFalse()
+                break;
             case 'chorizo':
                 finalizarChorizo(results)
                 setOpenFalse()
+                break;
+            case 'escoba':
+                finalizarEscoba(results)
+                setOpenFalse()
+                break;
             default:
                 return
         }
@@ -116,6 +125,45 @@ export const DialogManoFinalizada = ({open,setOpenFalse,juego,jugadores,setJugad
             }
             aux[i].resultados = puntajes
             aux[i].puntosExtra = []
+            aux[i].escobas = 0
+            aux[i].total = total
+        })
+        setResults([])
+        setDisableButton(true)
+        setJugadores(aux)
+
+    }
+    const finalizarEscoba = resultados =>{
+        let aux = jugadores
+        let resultadosFinal = []
+        resultados.map(resultado=>{
+            if(resultado.nombre != 'Empate'){
+                let count = 0
+                resultado.puntajes.map(puntaje=>{
+                        count += 1
+                })
+                resultadosFinal.push({
+                    nombre:resultado.nombre,
+                    puntos:count
+                })
+            }
+        })
+        aux.map((jugador,i)=>{
+            let count = 0
+            count += jugador.escobas
+            resultadosFinal.map(resultado=>{
+                if(resultado.nombre===jugador.nombre){
+                    count += resultado.puntos
+                }
+            })
+            let puntajes = aux[i].resultados
+            puntajes.push(count)
+            let total = jugador.total += count
+            if(total>=15){
+                aux[i].ganador = true
+                setGanador(jugador.nombre)
+            }
+            aux[i].resultados = puntajes
             aux[i].escobas = 0
             aux[i].total = total
         })

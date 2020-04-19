@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme=>({
     },
 }))
 
-export const JugadorChorizo= ({nombre,resultados,total,ganador})=>{
+export const JugadorBasico= ({nombre,resultados,total,ganador,juego})=>{
     const classes= useStyles()
     return(
         <Paper elevation={6} className={ganador?classes.winner:(total>=101?classes.looser:classes.root)}>
